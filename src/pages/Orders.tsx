@@ -1,40 +1,68 @@
-
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowLeft, Package, Truck, CheckCircle, Clock, MapPin } from "lucide-react";
+import { ArrowLeft, Package, Truck, CheckCircle, Clock, MapPin, Receipt, Download, QrCode, Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import Navbar from "@/components/Navbar";
 
 const Orders = () => {
+  const [selectedReceipt, setSelectedReceipt] = useState(null);
+
   const orders = [
     {
       id: "ORD-001",
       date: "2024-01-15",
       status: "delivered",
-      items: ["Milk", "Bread", "Apples"],
-      total: "₹450",
+      items: [
+        { name: "Milk", quantity: 2, price: 50, total: 100 },
+        { name: "Bread", quantity: 1, price: 25, total: 25 },
+        { name: "Apples", quantity: 3, price: 108.33, total: 325 }
+      ],
+      subtotal: 450,
+      discount: 0,
+      total: 450,
       deliveryTime: "2 hours",
-      address: "123 Main St, City"
+      address: "123 Main St, City",
+      receiptHash: "0x1a2b3c4d5e6f7890abcdef",
+      qrCode: "QR123456789"
     },
     {
       id: "ORD-002",
       date: "2024-01-14",
       status: "in-transit",
-      items: ["Yogurt", "Bananas", "Cereals"],
-      total: "₹680",
+      items: [
+        { name: "Yogurt", quantity: 4, price: 40, total: 160 },
+        { name: "Bananas", quantity: 2, price: 60, total: 120 },
+        { name: "Cereals", quantity: 1, price: 400, total: 400 }
+      ],
+      subtotal: 680,
+      discount: 0,
+      total: 680,
       deliveryTime: "1 hour",
-      address: "123 Main St, City"
+      address: "123 Main St, City",
+      receiptHash: "0x2b3c4d5e6f7890abcdef1a",
+      qrCode: "QR987654321"
     },
     {
       id: "ORD-003",
       date: "2024-01-13",
       status: "processing",
-      items: ["Rice", "Dal", "Oil"],
-      total: "₹850",
+      items: [
+        { name: "Rice", quantity: 1, price: 500, total: 500 },
+        { name: "Dal", quantity: 2, price: 150, total: 300 },
+        { name: "Oil", quantity: 1, price: 50, total: 50 }
+      ],
+      subtotal: 850,
+      discount: 0,
+      total: 850,
       deliveryTime: "3 hours",
-      address: "123 Main St, City"
+      address: "123 Main St, City",
+      receiptHash: "0x3c4d5e6f7890abcdef1a2b",
+      qrCode: "QR456789123"
     }
   ];
 
@@ -64,6 +92,42 @@ const Orders = () => {
     }
   };
 
+  const downloadReceipt = (order) => {
+    // Generate receipt content
+    const receiptContent = `
+PHYGITAL SHOPPING RECEIPT
+=========================
+Order ID: ${order.id}
+Date: ${new Date(order.date).toLocaleDateString()}
+Status: ${order.status.toUpperCase()}
+
+ITEMS:
+${order.items.map(item => 
+  `${item.name} x${item.quantity} - ₹${item.total}`
+).join('\n')}
+
+Subtotal: ₹${order.subtotal}
+Discount: ₹${order.discount}
+TOTAL: ₹${order.total}
+
+Delivery Address: ${order.address}
+Verification Hash: ${order.receiptHash}
+QR Code: ${order.qrCode}
+
+Thank you for shopping with us!
+    `;
+
+    const blob = new Blob([receiptContent], { type: 'text/plain' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `receipt-${order.id}.txt`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url);
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-blue-50">
       <Navbar />
@@ -89,7 +153,7 @@ const Orders = () => {
               Your Orders
             </h1>
             <p className="text-lg text-gray-600">
-              Track your phygital shopping orders and delivery status
+              Track your phygital shopping orders and view digital receipts
             </p>
           </motion.div>
 
@@ -123,10 +187,10 @@ const Orders = () => {
             <Card className="shadow-lg border-0 bg-white/80 backdrop-blur-sm">
               <CardContent className="p-6 text-center">
                 <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Package className="w-6 h-6 text-purple-600" />
+                  <Receipt className="w-6 h-6 text-purple-600" />
                 </div>
-                <div className="text-2xl font-bold text-gray-800">1.5h</div>
-                <div className="text-sm text-gray-600">Avg Delivery</div>
+                <div className="text-2xl font-bold text-gray-800">{orders.length}</div>
+                <div className="text-sm text-gray-600">Digital Receipts</div>
               </CardContent>
             </Card>
           </motion.div>
@@ -165,7 +229,7 @@ const Orders = () => {
                           <div className="flex flex-wrap gap-2">
                             {order.items.map((item, idx) => (
                               <Badge key={idx} variant="outline" className="text-xs">
-                                {item}
+                                {item.name} x{item.quantity}
                               </Badge>
                             ))}
                           </div>
@@ -183,7 +247,7 @@ const Orders = () => {
                       <div className="space-y-4">
                         <div>
                           <div className="text-sm text-gray-600 mb-1">Total Amount</div>
-                          <div className="text-2xl font-bold text-green-600">{order.total}</div>
+                          <div className="text-2xl font-bold text-green-600">₹{order.total}</div>
                         </div>
 
                         <div>
@@ -192,9 +256,114 @@ const Orders = () => {
                         </div>
 
                         <div className="flex gap-2 pt-2">
-                          <Button variant="outline" size="sm" className="flex-1">
-                            View Details
-                          </Button>
+                          <Dialog>
+                            <DialogTrigger asChild>
+                              <Button variant="outline" size="sm" className="flex-1" onClick={() => setSelectedReceipt(order)}>
+                                <Receipt className="w-4 h-4 mr-1" />
+                                Receipt
+                              </Button>
+                            </DialogTrigger>
+                            <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+                              <DialogHeader>
+                                <DialogTitle className="flex items-center gap-2">
+                                  <Receipt className="w-5 h-5" />
+                                  Digital Receipt - {order.id}
+                                </DialogTitle>
+                              </DialogHeader>
+                              
+                              {selectedReceipt && (
+                                <div className="space-y-6">
+                                  {/* Receipt Header */}
+                                  <div className="text-center border-b pb-4">
+                                    <h3 className="text-xl font-bold">PHYGITAL SHOPPING</h3>
+                                    <p className="text-sm text-gray-600">Digital Receipt</p>
+                                    <div className="mt-2">
+                                      <QrCode className="w-16 h-16 mx-auto text-gray-400" />
+                                      <p className="text-xs text-gray-500 mt-1">Scan for verification</p>
+                                    </div>
+                                  </div>
+
+                                  {/* Order Details */}
+                                  <div className="grid grid-cols-2 gap-4 text-sm">
+                                    <div>
+                                      <span className="text-gray-600">Order ID:</span>
+                                      <span className="ml-2 font-medium">{selectedReceipt.id}</span>
+                                    </div>
+                                    <div>
+                                      <span className="text-gray-600">Date:</span>
+                                      <span className="ml-2 font-medium">{new Date(selectedReceipt.date).toLocaleDateString()}</span>
+                                    </div>
+                                    <div>
+                                      <span className="text-gray-600">Status:</span>
+                                      <span className="ml-2 font-medium">{selectedReceipt.status}</span>
+                                    </div>
+                                    <div>
+                                      <span className="text-gray-600">QR Code:</span>
+                                      <span className="ml-2 font-medium">{selectedReceipt.qrCode}</span>
+                                    </div>
+                                  </div>
+
+                                  {/* Items Table */}
+                                  <div>
+                                    <h4 className="font-semibold mb-3">Items Purchased</h4>
+                                    <Table>
+                                      <TableHeader>
+                                        <TableRow>
+                                          <TableHead>Item</TableHead>
+                                          <TableHead>Qty</TableHead>
+                                          <TableHead>Price</TableHead>
+                                          <TableHead>Total</TableHead>
+                                        </TableRow>
+                                      </TableHeader>
+                                      <TableBody>
+                                        {selectedReceipt.items.map((item, idx) => (
+                                          <TableRow key={idx}>
+                                            <TableCell>{item.name}</TableCell>
+                                            <TableCell>{item.quantity}</TableCell>
+                                            <TableCell>₹{item.price.toFixed(2)}</TableCell>
+                                            <TableCell>₹{item.total}</TableCell>
+                                          </TableRow>
+                                        ))}
+                                      </TableBody>
+                                    </Table>
+                                  </div>
+
+                                  {/* Totals */}
+                                  <div className="border-t pt-4 space-y-2">
+                                    <div className="flex justify-between text-sm">
+                                      <span>Subtotal:</span>
+                                      <span>₹{selectedReceipt.subtotal}</span>
+                                    </div>
+                                    <div className="flex justify-between text-sm">
+                                      <span>Discount:</span>
+                                      <span>₹{selectedReceipt.discount}</span>
+                                    </div>
+                                    <div className="flex justify-between text-lg font-bold border-t pt-2">
+                                      <span>Total:</span>
+                                      <span>₹{selectedReceipt.total}</span>
+                                    </div>
+                                  </div>
+
+                                  {/* Verification */}
+                                  <div className="bg-gray-50 p-4 rounded-lg">
+                                    <h4 className="font-semibold mb-2">Blockchain Verification</h4>
+                                    <p className="text-xs text-gray-600 mb-1">Hash:</p>
+                                    <p className="font-mono text-xs break-all">{selectedReceipt.receiptHash}</p>
+                                  </div>
+
+                                  {/* Download Button */}
+                                  <Button 
+                                    onClick={() => downloadReceipt(selectedReceipt)} 
+                                    className="w-full bg-gradient-to-r from-purple-600 to-blue-600"
+                                  >
+                                    <Download className="w-4 h-4 mr-2" />
+                                    Download Receipt
+                                  </Button>
+                                </div>
+                              )}
+                            </DialogContent>
+                          </Dialog>
+
                           {order.status === "delivered" && (
                             <Button size="sm" className="flex-1 bg-gradient-to-r from-purple-600 to-blue-600">
                               Reorder
