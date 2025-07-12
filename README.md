@@ -1,73 +1,71 @@
-# Welcome to your Lovable project
+# 🛍️ Shop Physically. Check Out Digitally. Your Bag Follows You Home.
 
-## Project info
+---
 
-**URL**: https://lovable.dev/projects/eab515a3-7215-4fdd-84a4-5a0cdff570a8
+## 🌐 Project Info
 
-## How can I edit this code?
+**Live URL**: [https://phygital-store.vercel.app/](https://phygital-store.vercel.app/)
 
-There are several ways of editing your application.
+A next-generation **PHYGITAL (PHYSICAL AND DIGITAL) shopping app** Every single time someone walks into a supermarket or hypermart and wishes the experience was as smooth, personalized, and intelligent as online shopping—but without losing the physical experience. <br>
+**Why does our project matter —** Online shopping is smart but not immediate · Offline shopping is immediate but lacks intelligence · personalization · and comfort · Customers deserve the best of both worlds
 
-**Use Lovable**
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/eab515a3-7215-4fdd-84a4-5a0cdff570a8) and start prompting.
+---
 
-Changes made via Lovable will be committed automatically to this repo.
+## 🧠 Key Features at a Glance
 
-**Use your preferred IDE**
+- 🧭 **Smart Indoor Navigation** with gamified treasure-hunt experience
+- 📦 **Post-checkout Home Delivery** — walk out, bag follows
+- 🛒 **Product Scanning via QR/Barcode** to instantly add to cart
+- 🤖 **AI Shopping Assistant** to suggest, compare, and help in-store
+- 📷 **AR Shelf Scanning** for real-time stock lookup
+- 📉 **Price-Drop Alerts** on near-expiry items
+- 📅 **Monthly Auto-Delivery Scheduling** of essentials
+- 🔁 **Product Journey Tracker** — from production to delivery
+- 🧾 **Blockchain/QR Verified Receipts**
+- 🧪 **Dummy Pages** for non-implemented features (fully styled for demo)
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+---
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
-
-**Edit a file directly in GitHub**
-
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
+## 🛠️ Technologies Used
 
 This project is built with:
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+- **Next.js** (v15+)
+- **React** + **TypeScript**
+- **Tailwind CSS** for styling
+- **shadcn/ui** for UI components
+- **Framer Motion** for animations
+- **Vercel** for deployment
 
-## How can I deploy this project?
+---
 
-Simply open [Lovable](https://lovable.dev/projects/eab515a3-7215-4fdd-84a4-5a0cdff570a8) and click on Share -> Publish.
+## ⚙️ How to Run the Project Locally
 
-## Can I connect a custom domain to my Lovable project?
+To run this project on your machine:
 
-Yes, you can!
+### 🔧 Prerequisites
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+Ensure you have the following installed:
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+- [Node.js](https://nodejs.org/) (v18+ recommended)
+- [npm](https://www.npmjs.com/) (comes with Node.js)
+
+---
+
+### 📥 Steps to Clone and Start
+
+```bash
+# 1️⃣ Clone the repository
+git clone https://github.com/rashmimaharishi/PhygitalStore.git
+
+# 2️⃣ Navigate into the project folder
+cd PhygitalStore
+
+# 3️⃣ Install all required dependencies
+npm install
+
+# 4️⃣ Start the development server
+npm run dev
+
+# App will be live at: http://localhost:3000
